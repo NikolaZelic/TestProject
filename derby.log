@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Fri Jun 28 10:03:43 CEST 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-016b-9d1c-8ff4-000008e3ee38 
-on database directory memory:C:\Users\Nikola\eclipse-workspace\TestProject\testdb with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+Fri Jun 28 10:58:35 CEST 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-016b-9d4e-cab7-000009146608 
+on database directory C:\Users\Nikola\eclipse-workspace\TestProject\~\test with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
 Loaded from file:/C:/Users/Nikola/.m2/repository/org/apache/derby/derby/10.13.1.1/derby-10.13.1.1.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_201-b09
