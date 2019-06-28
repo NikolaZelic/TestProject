@@ -7,7 +7,7 @@ import com.zelic.TestProject.entities.User;
 import com.zelic.TestProject.repositories.UsersRepository;
 
 @Service
-public class UsersServices {
+public class UsersService {
 
 	@Autowired
 	private UsersRepository usersRepository;

@@ -7,24 +7,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zelic.TestProject.entities.User;
-import com.zelic.TestProject.services.UsersService;
+import com.zelic.TestProject.entities.Account;
+import com.zelic.TestProject.services.AccountsService;
 
 @RestController
-@RequestMapping("/api/users")
-public class UsersController {
+@RequestMapping("/api/accounts")
+public class AccountsController {
 
 	@Autowired
-	private UsersService usersServices;
+	private AccountsService accountsService;
 	
 	@GetMapping
-	public Iterable<User> getUsers() {
-		return usersServices.getUsers();
+	public Iterable<Account> getAccounts() {
+		return accountsService.getAccounts();
 	}
 	
 	@PostMapping
-	public Long createUser(@RequestBody User user) {
-		return usersServices.createUser(user);
+	public Long createAccount(@RequestBody Account account) {
+		return accountsService.createAccount(account);
 	}
 	
 }
