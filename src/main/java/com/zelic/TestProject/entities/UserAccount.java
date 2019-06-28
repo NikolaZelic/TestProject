@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +13,7 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 @Entity(name = "UserAccount") 
-@Table(name = "user_account")
+@Table(name = "users_accounts")
 public class UserAccount {
     @EmbeddedId
     private UserAccountId id;
@@ -50,11 +51,11 @@ public class UserAccount {
 		this.id = id;
 	}
 
-	public Boolean isOwner() {
+	public Boolean getIsOwner() {
 		return isOwner;
 	}
 
-	public void setOwner(Boolean isOwner) {
+	public void setIsOwner(Boolean isOwner) {
 		this.isOwner = isOwner;
 	}
 

@@ -1,6 +1,8 @@
 package com.zelic.TestProject.services;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,9 +37,30 @@ public class AccountsService {
 		return accountsRepository.findOne(id);
 	}
 	
-	public Iterable<UserAccount> getUsersOnAccount(Long accountId) {
-		List<UserAccount> users = accountsRepository.findOne(accountId).getUsers();
-		return users;
+	/**
+	 * Return users that have access to account (excluding owner)
+	 */
+	public Iterable<User> getUsersOnAccount(Long accountId) {
+		Account account = accountsRepository.findOne(accountId);
+		if(account==null)
+			return null;
+		// TODO Ako stignes odradi ovo preko jednog upita
+		return account.getUsers().
+				stream().
+				filter( element -> !element.getIsOwner() ).
+				map( element -> element.getUser() ).
+				collect( Collectors.toList() );
+	}
+	
+	public Optional<User> getOwnerOfAccount(Long accountId) {
+		Account account = accountsRepository.findOne(accountId);
+		if(account==null)
+			return null;
+		return account.getUsers().
+				stream().
+				filter( element -> element.getIsOwner() ).
+				map( el -> el.getUser() ).
+				findFirst();
 	}
 	
 	public boolean addUserToAccount(Long accountId, Long userId) {

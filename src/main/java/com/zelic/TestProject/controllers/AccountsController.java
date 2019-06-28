@@ -1,5 +1,7 @@
 package com.zelic.TestProject.controllers;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +41,13 @@ public class AccountsController {
 	}
 	
 	@GetMapping("/{id}/users")
-	public Iterable<UserAccount> getUsersOnAccount(@PathVariable Long id) {
+	public Iterable<User> getUsersOnAccount(@PathVariable Long id) {
 		return accountsService.getUsersOnAccount(id);
+	}
+	
+	@GetMapping("/{id}/owner")
+	public Optional<User> getOwnerOfAccount(@PathVariable Long id) {
+		return accountsService.getOwnerOfAccount(id);
 	}
 	
 	@PostMapping("/{id}/users")
