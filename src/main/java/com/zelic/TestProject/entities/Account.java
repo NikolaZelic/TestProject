@@ -17,6 +17,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity(name = "Account")
 @Table(name = "accounts")
 public class Account {
@@ -28,6 +30,7 @@ public class Account {
     private String description;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<UserAccount> users = new ArrayList<>();
 
     public Account() {

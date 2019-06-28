@@ -1,16 +1,27 @@
 package com.zelic.TestProject.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zelic.TestProject.entities.Account;
+import com.zelic.TestProject.entities.User;
+import com.zelic.TestProject.entities.UserAccount;
+import com.zelic.TestProject.entities.UserAccountId;
 import com.zelic.TestProject.repositories.AccountsRepository;
+import com.zelic.TestProject.repositories.UsersAccountsRepository;
+import com.zelic.TestProject.repositories.UsersRepository;
 
 @Service
 public class AccountsService {
 
 	@Autowired
 	private AccountsRepository accountsRepository;
+	@Autowired 
+	private UsersRepository usersRepository;
+	@Autowired
+	private UsersAccountsRepository usersAccountsRepository;
 	
 	public Iterable<Account> getAccounts() {
 		return accountsRepository.findAll();
@@ -20,5 +31,31 @@ public class AccountsService {
 		return accountsRepository.save(account).getId();
 	}
 	
+	public Account getAccount(Long id) {
+		return accountsRepository.findOne(id);
+	}
 	
+	public Iterable<UserAccount> getUsersOnAccount(Long accountId) {
+		List<UserAccount> users = accountsRepository.findOne(accountId).getUsers();
+		return users;
+	}
+	
+	public boolean addUserToAccount(Long accountId, Long userId) {
+		Account account = accountsRepository.findOne(accountId);
+		if(account==null) {	// TODO Pronaci koji se izuzeci ispaljuju u ovakvim situacijama
+			throw new IllegalArgumentException("There isn't account with ID: " + accountId);
+		}
+		
+		User user = usersRepository.findOne(userId);
+		if(user==null) {	// TODO Pronaci koji se izuzeci ispaljuju u ovakvim situacijama
+			throw new IllegalArgumentException("There isn't user with ID: " + userId);
+		}
+		
+		if(usersAccountsRepository.findOne(new UserAccountId(userId, accountId))!=null)
+			return false;	// User already has access to account
+		
+		UserAccount userAccount = new UserAccount(user, account, false);
+		usersAccountsRepository.save(userAccount);
+		return true;	// Granted access to users
+	}
 }
