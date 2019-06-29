@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.zelic.TestProject.controllers.AuthenticationController;
+import com.zelic.TestProject.controllers.AuthenticationController.LoginDetails;
 import com.zelic.TestProject.entities.User;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -27,6 +29,7 @@ public class TestProjectApplicationTests {
 	public void createUserTest() {
 		System.out.println("--------------------------THIS IS TEST---------------------");
 		
+		// CREATING USERS
 		User user1 = new User("Test1", "Lastname", "test1@gmail.com", "123", null);
 		ResponseEntity<Long> response1 = restTemplate.postForEntity("/api/register", user1, Long.class);
 		Long user1Id = response1.getBody();
@@ -38,10 +41,18 @@ public class TestProjectApplicationTests {
 		assertThat(user2Id, notNullValue());
 		
 		User user3 = new User("Test3", "Lastname", "test3@gmail.com", "123", null);
-		ResponseEntity<Long> response = restTemplate.postForEntity("/api/register", user3, Long.class);
-		Long user3Id = response.getBody();
+		ResponseEntity<Long> response3 = restTemplate.postForEntity("/api/register", user3, Long.class);
+		Long user3Id = response3.getBody();
 		assertThat(user1Id, notNullValue());
 		
+		
+		// LOGIN 
+		LoginDetails loginDetails = new LoginDetails(user1.getEmail(), user1.getPassword());
+		ResponseEntity<String> loginResponse = restTemplate.postForEntity("api/login", loginDetails, String.class);
+		assertThat(loginResponse.getBody(), is("Successful login"));
+		System.out.println(loginResponse.getBody());
+		
+		// CREATE ACCOUNT
 		
 	}
 
