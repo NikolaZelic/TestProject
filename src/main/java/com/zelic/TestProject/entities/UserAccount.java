@@ -18,7 +18,7 @@ public class UserAccount {
     @EmbeddedId
     private UserAccountId id;
     @Column(nullable = false)
-    private Boolean isOwner;
+    private Integer isOwner;
 
     @ManyToOne
     @MapsId("userId")
@@ -30,7 +30,7 @@ public class UserAccount {
 
     private UserAccount() {}
 
-    public UserAccount(User user, Account account, Boolean isOwner) {
+    public UserAccount(User user, Account account, Integer isOwner) {
         this.user = user;
         this.account = account;
         this.isOwner = isOwner;
@@ -51,11 +51,11 @@ public class UserAccount {
 		this.id = id;
 	}
 
-	public Boolean getIsOwner() {
+	public Integer getIsOwner() {
 		return isOwner;
 	}
 
-	public void setIsOwner(Boolean isOwner) {
+	public void setIsOwner(Integer isOwner) {
 		this.isOwner = isOwner;
 	}
 

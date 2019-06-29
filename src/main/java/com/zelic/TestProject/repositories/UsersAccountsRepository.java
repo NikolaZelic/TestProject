@@ -7,6 +7,7 @@ import com.zelic.TestProject.entities.UserAccount;
 import com.zelic.TestProject.entities.UserAccountId;
 
 @Repository
-public interface UsersAccountsRepository extends CrudRepository<UserAccount, UserAccountId>{
+public interface UsersAccountsRepository 
+	extends CrudRepository<UserAccount, UserAccountId>{
 
 }

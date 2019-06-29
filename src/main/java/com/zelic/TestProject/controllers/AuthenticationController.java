@@ -21,7 +21,8 @@ public class AuthenticationController {
 	private UsersService usersService;
 	
 	@RequestMapping(path = "/register", method = RequestMethod.POST)
-	public String register( @Valid @RequestBody User user ) {
+	public String register( @RequestBody User user ) {
+		System.out.println(user);
 		usersService.createUser(user);
 		return "Successful registration";
 	}

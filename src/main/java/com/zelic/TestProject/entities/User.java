@@ -13,7 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 // TODO Dodati restrikciju na duplikat emjla
 @Entity(name = "User")
 @Table(name = "users")
@@ -26,9 +30,11 @@ public class User {
 	@Column(nullable = false)
 	private String lastname;
 	@Column(nullable = false)
+	@NotEmpty
 	private String email;
 	@Column(nullable = false)
-	@JsonIgnore
+	@NotEmpty
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;	
 	private String cardNumber;
 
@@ -48,7 +54,7 @@ public class User {
 	}
 
 	public void addAccount(Account account, boolean isOwner) {
-        UserAccount userAccount = new UserAccount(this, account, isOwner);
+        UserAccount userAccount = new UserAccount(this, account, isOwner?1:0);
         this.accounts.add(userAccount);
         account.getUsers().add(userAccount);
     }

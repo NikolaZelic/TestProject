@@ -35,7 +35,7 @@ public class AccountsService {
 		Account createdAccount =  accountsRepository.save(account);
 		
 		// Add ownership to a customer
-		UserAccount userAccount = new UserAccount(customer, account, true);
+		UserAccount userAccount = new UserAccount(customer, account, 1);
 		usersAccountsRepository.save(userAccount);
 		
 		return createdAccount.getId();
@@ -55,7 +55,7 @@ public class AccountsService {
 		// TODO Ako stignes odradi ovo preko jednog upita
 		return account.getUsers().
 				stream().
-				filter( element -> !element.getIsOwner() ).
+				filter( element -> element.getIsOwner()==0 ).
 				map( element -> element.getUser() ).
 				collect( Collectors.toList() );
 	}
@@ -66,7 +66,7 @@ public class AccountsService {
 			return null;
 		return account.getUsers().
 				stream().
-				filter( element -> element.getIsOwner() ).
+				filter( element -> element.getIsOwner()==1 ).
 				map( el -> el.getUser() ).
 				findFirst().
 				orElseGet(null);
@@ -86,7 +86,7 @@ public class AccountsService {
 		if(usersAccountsRepository.findOne(new UserAccountId(userId, accountId))!=null)
 			return false;	// User already has access to account
 		
-		UserAccount userAccount = new UserAccount(user, account, false);
+		UserAccount userAccount = new UserAccount(user, account, 0);
 		usersAccountsRepository.save(userAccount);
 		return true;	// Granted access to users
 	}
