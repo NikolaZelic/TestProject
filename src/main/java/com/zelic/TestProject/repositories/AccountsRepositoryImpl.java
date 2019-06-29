@@ -7,6 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import com.zelic.TestProject.entities.Account;
 import com.zelic.TestProject.entities.User;
 
 public class AccountsRepositoryImpl implements AccountsRepositoryCustom{
@@ -33,6 +34,13 @@ public class AccountsRepositoryImpl implements AccountsRepositoryCustom{
 		return resultList.get(0);
 	}
 
-	
+	@Override
+	public Iterable<Account> getAccountsbyUserAndOwner(Long userId, boolean isOwner){
+		String sql = "SELECT a FROM UserAccount ua JOIN ua.account a WHERE ua.isOwner = ?1 AND ua.id.userId = ?2";
+		Query query = entityManager.createQuery(sql, Account.class);
+		query.setParameter(1, isOwner? 1:0);
+		query.setParameter(2, userId);
+		return query.getResultList();
+	}
 	
 }

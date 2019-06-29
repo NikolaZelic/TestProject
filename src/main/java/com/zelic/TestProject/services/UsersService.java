@@ -3,7 +3,9 @@ package com.zelic.TestProject.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zelic.TestProject.entities.Account;
 import com.zelic.TestProject.entities.User;
+import com.zelic.TestProject.repositories.AccountsRepository;
 import com.zelic.TestProject.repositories.UsersRepository;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -15,9 +17,9 @@ public class UsersService {
 
 	@Autowired
 	private UsersRepository usersRepository;
+	@Autowired
+	private AccountsRepository accountsRepository;
 	
-//	BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), bcryptHashString);
-
 	public Long createUser(User user) {
 		user.setId(null);	// Just to be sure that it is new user
 		user.setPassword( BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray()) );
@@ -38,6 +40,23 @@ public class UsersService {
 		return usersRepository.findAll();
 	}
 	
+	public User getUser(Long userId) {
+		return usersRepository.findOne(userId);
+	}
+	
+	/**
+	 * Return accounts that user have access to (without accounts that user owns)
+	 */
+	public Iterable<Account> getUserAvailableAccounts(Long userId) {
+		return accountsRepository.getAccountsbyUserAndOwner(userId, false);
+	}
+	
+	/**
+	 * Returns accounts that user owns
+	 */
+	public Iterable<Account> getUserAccounts(Long userId) {
+		return accountsRepository.getAccountsbyUserAndOwner(userId, true);
+	}
 }
 
 class UserCredentialException extends RuntimeException {
