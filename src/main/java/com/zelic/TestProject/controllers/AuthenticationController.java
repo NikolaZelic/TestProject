@@ -21,10 +21,9 @@ public class AuthenticationController {
 	private UsersService usersService;
 	
 	@RequestMapping(path = "/register", method = RequestMethod.POST)
-	public String register( @RequestBody User user ) {
+	public Long register( @RequestBody User user ) {
 		System.out.println(user);
-		usersService.createUser(user);
-		return "Successful registration";
+		return usersService.createUser(user);
 	}
 	
 	@RequestMapping(path = "/login", method = RequestMethod.POST)

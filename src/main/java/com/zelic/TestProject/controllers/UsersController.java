@@ -33,7 +33,7 @@ public class UsersController {
 		return usersServices.getUser(id);
 	}
 	/**
-	 * Returns accounts that user have access to (without accounts that user owns) 
+	 * Returns accounts that user has access to (without accounts that user owns) 
 	 */
 	@RequestMapping("/{id}/accounts")
 	public Iterable<Account> getUserAccounts(@PathVariable Long id) {

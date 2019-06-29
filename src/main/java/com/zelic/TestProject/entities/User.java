@@ -34,7 +34,7 @@ public class User {
 	private String email;
 	@Column(nullable = false)
 	@NotEmpty
-	@JsonProperty(access = Access.WRITE_ONLY)
+//	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;	
 	private String cardNumber;
 
@@ -51,6 +51,17 @@ public class User {
 		this.name = name;
 		this.lastname = lastname;
 		this.email = email;
+	}
+    
+    
+
+	public User(String name, String lastname, String email, String password, String cardNumber) {
+		super();
+		this.name = name;
+		this.lastname = lastname;
+		this.email = email;
+		this.password = password;
+		this.cardNumber = cardNumber;
 	}
 
 	public void addAccount(Account account, boolean isOwner) {
