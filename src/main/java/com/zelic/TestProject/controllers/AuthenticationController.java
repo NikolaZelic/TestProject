@@ -22,7 +22,6 @@ public class AuthenticationController {
 	
 	@RequestMapping(path = "/register", method = RequestMethod.POST)
 	public Long register( @RequestBody User user ) {
-		System.out.println(user);
 		return usersService.createUser(user);
 	}
 	
@@ -51,8 +50,9 @@ public class AuthenticationController {
 		@NotEmpty
 		private String password;
 		
-		
-		
+		public LoginDetails() {
+			super();
+		}
 		public LoginDetails(String email, String password) {
 			super();
 			this.email = email;

@@ -2,17 +2,23 @@ package com.zelic.TestProject;
 
 import static org.junit.Assert.assertThat;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.zelic.TestProject.controllers.AuthenticationController;
 import com.zelic.TestProject.controllers.AuthenticationController.LoginDetails;
+import com.zelic.TestProject.entities.Account;
 import com.zelic.TestProject.entities.User;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -48,11 +54,24 @@ public class TestProjectApplicationTests {
 		
 		// LOGIN 
 		LoginDetails loginDetails = new LoginDetails(user1.getEmail(), user1.getPassword());
-		ResponseEntity<String> loginResponse = restTemplate.postForEntity("api/login", loginDetails, String.class);
+		ResponseEntity<String> loginResponse = restTemplate.postForEntity("/api/login", loginDetails, String.class);
+//		loginResponse.getHeaders().forEach( (k,v) -> System.out.println(k+" " +v) );
+		
 		assertThat(loginResponse.getBody(), is("Successful login"));
 		System.out.println(loginResponse.getBody());
 		
 		// CREATE ACCOUNT
+		// Maintain session
+		String cookie = loginResponse.getHeaders().get("Set-Cookie").get(0);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Cookie", cookie);
+		
+		Account account = new Account("TestAccount", "Some description");
+		HttpEntity<Account> accountEntity = new HttpEntity<Account>(account, headers);
+		
+		ResponseEntity<Long> accountResponse = restTemplate.postForEntity("/api/accounts", accountEntity, Long.class);
+		Long accountId = accountResponse.getBody();
+		assertThat(accountId, notNullValue());
 		
 	}
 

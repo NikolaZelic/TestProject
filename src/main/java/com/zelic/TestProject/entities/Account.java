@@ -51,11 +51,10 @@ public class Account {
     public Account() {
     }
 
-	public Account(String name, String description, List<UserAccount> posts) {
+	public Account(String name, String description) {
 		super();
 		this.name = name;
 		this.description = description;
-		this.users = posts;
 	}
 
 	
