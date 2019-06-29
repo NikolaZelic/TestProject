@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+// TODO Dodati restrikciju na duplikat emjla
 @Entity(name = "User")
 @Table(name = "users")
 public class User {
@@ -28,7 +28,8 @@ public class User {
 	@Column(nullable = false)
 	private String email;
 	@Column(nullable = false)
-	private String password;
+	@JsonIgnore
+	private String password;	
 	private String cardNumber;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -29,8 +29,16 @@ public class AccountsService {
 		return accountsRepository.findAll();
 	}
 	
-	public Long createAccount(Account account) {
-		return accountsRepository.save(account).getId();
+	public Long createAccount(Account account, User customer) {
+		// Create account
+		account.setId(null);	// Just to be sure...
+		Account createdAccount =  accountsRepository.save(account);
+		
+		// Add ownership to a customer
+		UserAccount userAccount = new UserAccount(customer, account, true);
+		usersAccountsRepository.save(userAccount);
+		
+		return createdAccount.getId();
 	}
 	
 	public Account getAccount(Long id) {
@@ -52,7 +60,7 @@ public class AccountsService {
 				collect( Collectors.toList() );
 	}
 	
-	public Optional<User> getOwnerOfAccount(Long accountId) {
+	public User getOwnerOfAccount(Long accountId) {
 		Account account = accountsRepository.findOne(accountId);
 		if(account==null)
 			return null;
@@ -60,7 +68,8 @@ public class AccountsService {
 				stream().
 				filter( element -> element.getIsOwner() ).
 				map( el -> el.getUser() ).
-				findFirst();
+				findFirst().
+				orElseGet(null);
 	}
 	
 	public boolean addUserToAccount(Long accountId, Long userId) {
@@ -81,4 +90,6 @@ public class AccountsService {
 		usersAccountsRepository.save(userAccount);
 		return true;	// Granted access to users
 	}
+
+	
 }

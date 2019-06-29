@@ -22,9 +22,5 @@ public class UsersController {
 		return usersServices.getUsers();
 	}
 	
-	@PostMapping
-	public Long createUser(@RequestBody User user) {
-		return usersServices.createUser(user);
-	}
 	
 }

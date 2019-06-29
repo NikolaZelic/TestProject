@@ -1,7 +1,8 @@
 package com.zelic.TestProject.controllers;
 
-import java.util.Optional;
+import java.util.Objects;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zelic.TestProject.entities.Account;
 import com.zelic.TestProject.entities.User;
-import com.zelic.TestProject.entities.UserAccount;
 import com.zelic.TestProject.services.AccountsService;
+
+import errors.NoSessionException;
 
 @RestController
 @RequestMapping("/api/accounts")
@@ -31,8 +33,12 @@ public class AccountsController {
 	}
 	
 	@PostMapping
-	public Long createAccount(@Valid @RequestBody Account account) {
-		return accountsService.createAccount(account);
+	public Long createAccount(@Valid @RequestBody Account account, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if( session.isNew() || Objects.isNull(user) )
+			throw new NoSessionException();
+		
+		return accountsService.createAccount(account, user);
 	}
 	
 	@GetMapping("/{id}")
@@ -45,8 +51,8 @@ public class AccountsController {
 		return accountsService.getUsersOnAccount(id);
 	}
 	
-	@GetMapping("/{id}/owner")
-	public Optional<User> getOwnerOfAccount(@PathVariable Long id) {
+	@GetMapping("/{id}/customer")
+	public User getOwnerOfAccount(@PathVariable Long id) {
 		return accountsService.getOwnerOfAccount(id);
 	}
 	
