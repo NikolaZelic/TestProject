@@ -3,11 +3,13 @@ package com.zelic.TestProject.repositories;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zelic.TestProject.entities.Farm;
 import com.zelic.TestProject.entities.User;
 
 @Repository
@@ -24,6 +26,10 @@ public class UsersRepositoryImpl implements UsersRepositoryCustom {
 		return query.getResultList();
 	}
 
-	
+	public Iterable<Farm> getUserFarms(Long userId) {
+		String sql = "SELECT f FROM UserAccount ua JOIN ua.account a JOIN a.farms f";
+		Query query = entityManager.createQuery(sql, Farm.class);
+		return query.getResultList();
+	}
 	
 }

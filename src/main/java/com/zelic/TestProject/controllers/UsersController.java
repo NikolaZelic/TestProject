@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zelic.TestProject.entities.Account;
+import com.zelic.TestProject.entities.Farm;
 import com.zelic.TestProject.entities.User;
 import com.zelic.TestProject.services.UsersService;
 
@@ -39,6 +40,9 @@ public class UsersController {
 		return usersServices.getUserAvailableAccounts(id);
 	}
 	
-	
+	@RequestMapping("/{id}/farms")
+	public Iterable<Farm> getUserFarms(@PathVariable Long id) {
+		return usersServices.getUserFarms(id);
+	}
 	
 }

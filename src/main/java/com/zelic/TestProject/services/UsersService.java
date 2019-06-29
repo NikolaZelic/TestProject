@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zelic.TestProject.entities.Account;
+import com.zelic.TestProject.entities.Farm;
 import com.zelic.TestProject.entities.User;
 import com.zelic.TestProject.repositories.AccountsRepository;
 import com.zelic.TestProject.repositories.UsersRepository;
@@ -56,6 +57,10 @@ public class UsersService {
 	 */
 	public Iterable<Account> getUserAccounts(Long userId) {
 		return accountsRepository.getAccountsbyUserAndOwner(userId, true);
+	}
+	
+	public Iterable<Farm> getUserFarms(Long userId) {
+		return usersRepository.getUserFarms(userId);
 	}
 }
 
