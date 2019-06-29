@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-// TODO Dodati restrikciju na duplikat emjla
+
 @Entity(name = "User")
 @Table(name = "users")
 public class User {

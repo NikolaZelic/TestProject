@@ -58,12 +58,12 @@ public class AccountsService {
 	
 	public boolean addUserToAccount(Long accountId, Long userId) {
 		Account account = accountsRepository.findOne(accountId);
-		if(account==null) {	// TODO Pronaci koji se izuzeci ispaljuju u ovakvim situacijama
+		if(account==null) {	
 			throw new IllegalArgumentException("There isn't account with ID: " + accountId);
 		}
 		
 		User user = usersRepository.findOne(userId);
-		if(user==null) {	// TODO Pronaci koji se izuzeci ispaljuju u ovakvim situacijama
+		if(user==null) {
 			throw new IllegalArgumentException("There isn't user with ID: " + userId);
 		}
 		
