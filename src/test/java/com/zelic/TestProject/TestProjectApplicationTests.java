@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.zelic.TestProject.controllers.AuthenticationController;
 import com.zelic.TestProject.controllers.AuthenticationController.LoginDetails;
 import com.zelic.TestProject.entities.Account;
+import com.zelic.TestProject.entities.Farm;
 import com.zelic.TestProject.entities.User;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -58,7 +59,6 @@ public class TestProjectApplicationTests {
 //		loginResponse.getHeaders().forEach( (k,v) -> System.out.println(k+" " +v) );
 		
 		assertThat(loginResponse.getBody(), is("Successful login"));
-		System.out.println(loginResponse.getBody());
 		
 		// CREATE ACCOUNT
 		// Maintain session
@@ -73,6 +73,30 @@ public class TestProjectApplicationTests {
 		Long accountId = accountResponse.getBody();
 		assertThat(accountId, notNullValue());
 		
+		// Add user to account
+		HttpEntity<Void> addUserEntity = new HttpEntity<>(headers);
+		String url = "/api/accounts/"+accountId+"/users?userId="+user2Id;
+		ResponseEntity<String> addUserResponse = restTemplate.postForEntity(url, addUserEntity, String.class);
+		assertThat(addUserResponse.getBody(), is("User added"));
+		
+		// Create farm
+		Farm farm = new Farm(null, "MyFarm", "Besta farm ever", "Somwhere");
+		ResponseEntity<Long> createFarmResponse = 
+				restTemplate.postForEntity("/api/farms?accountId="+accountId, farm, Long.class);
+		Long farmId = createFarmResponse.getBody();
+		assertThat(farmId, notNullValue());
+		
+		// Select users
+		ResponseEntity<Object> getUsersResponse = restTemplate.getForEntity("/api/users", Object.class);
+		List<User> users = (List<User>) getUsersResponse.getBody();
+		assertThat(users.size(), is(3));
+		
+		// Select customers
+		ResponseEntity<Object> getCustomersResponse = restTemplate.getForEntity("/api/customers", Object.class);
+		List<User> customers = (List<User>) getCustomersResponse.getBody();
+		assertThat(customers.size(), is(1));	// User one has created account so he has become customer
+		System.out.println(customers.get(0));
 	}
 
 }
+

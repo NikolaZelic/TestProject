@@ -21,7 +21,7 @@ public class UsersRepositoryImpl implements UsersRepositoryCustom {
 	
 	@Override
 	public Iterable<User> getCustomers() {
-		String sql = "SELECT u FROM UserAccount ua JOIN ua.user u WHERE ua.isOwner = 1";
+		String sql = "SELECT DISTINCT u FROM UserAccount ua JOIN ua.user u WHERE ua.isOwner = 1";
 		Query query = entityManager.createQuery(sql, User.class);
 		return query.getResultList();
 	}
