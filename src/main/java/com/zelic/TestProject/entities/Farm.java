@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "farms")
@@ -24,6 +26,7 @@ public class Farm {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="account_id", nullable=true)
+	@JsonIgnore
     private Account account;
 	
 	public Farm() {

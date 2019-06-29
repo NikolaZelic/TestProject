@@ -36,6 +36,7 @@ public class Account {
     @OneToMany(mappedBy="account", cascade = CascadeType.ALL)
     private List<Farm> farms = new ArrayList<Farm>();
 	
+    
 	public void addFarm(Farm farm) {
 		farms.add(farm);
 		farm.setAccount(this);
@@ -45,6 +46,7 @@ public class Account {
 		farms.remove(farm);
 		farm.setAccount(null);
 	}
+	
     
     public Account() {
     }
