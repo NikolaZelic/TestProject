@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity(name = "Account")
 @Table(name = "accounts")
-public class Account {
+public class Account { 
     @Id
     @GeneratedValue
     private Long id;
@@ -33,6 +33,19 @@ public class Account {
     @JsonIgnore
     private List<UserAccount> users = new ArrayList<>();
 
+    @OneToMany(mappedBy="account", cascade = CascadeType.ALL)
+    private List<Farm> farms = new ArrayList<Farm>();
+	
+	public void addFarm(Farm farm) {
+		farms.add(farm);
+		farm.setAccount(this);
+	}
+	
+	public void removeFarm(Farm farm) {
+		farms.remove(farm);
+		farm.setAccount(null);
+	}
+    
     public Account() {
     }
 
