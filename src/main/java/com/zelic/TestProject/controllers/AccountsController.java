@@ -18,6 +18,7 @@ import com.zelic.TestProject.entities.Account;
 import com.zelic.TestProject.entities.User;
 import com.zelic.TestProject.services.AccountsService;
 
+import errors.NoPrivelagesException;
 import errors.NoSessionException;
 
 @RestController
@@ -57,9 +58,17 @@ public class AccountsController {
 	}
 	
 	@PostMapping("/{id}/users")
-	public boolean addUserToAccount(@PathVariable Long id, @RequestParam Long userId) {
-		System.out.println(id+" "+userId);
-		return accountsService.addUserToAccount(id, userId);
+	public String addUserToAccount(@PathVariable Long id, @RequestParam Long userId, HttpSession session) {
+		User customer = (User) session.getAttribute("user");	
+		if(session.isNew() || Objects.isNull(customer))
+			throw new NoSessionException();
+		
+		// Only owner of the account can edit it
+		User owner = accountsService.getOwnerOfAccount(id);
+		if(owner.getId()!=customer.getId())
+			throw new NoPrivelagesException("You don't own account");
+		
+		return accountsService.addUserToAccount(id, userId) ? "User added" : "User is already on account";
 	}
 	
 }
