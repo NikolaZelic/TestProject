@@ -7,6 +7,8 @@ import com.zelic.TestProject.entities.Account;
 
 @Repository
 public interface AccountsRepository 
-	extends CrudRepository<Account, Long> {
+	extends CrudRepository<Account, Long>,
+	AccountsRepositoryCustom
+{
 
 }

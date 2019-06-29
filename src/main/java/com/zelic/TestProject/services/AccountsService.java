@@ -49,27 +49,11 @@ public class AccountsService {
 	 * Return users that have access to account (excluding owner)
 	 */
 	public Iterable<User> getUsersOnAccount(Long accountId) {
-		Account account = accountsRepository.findOne(accountId);
-		if(account==null)
-			return null;
-		// TODO Ako stignes odradi ovo preko jednog upita
-		return account.getUsers().
-				stream().
-				filter( element -> element.getIsOwner()==0 ).
-				map( element -> element.getUser() ).
-				collect( Collectors.toList() );
+		return accountsRepository.getUsersOnAccount(accountId);
 	}
 	
 	public User getOwnerOfAccount(Long accountId) {
-		Account account = accountsRepository.findOne(accountId);
-		if(account==null)
-			return null;
-		return account.getUsers().
-				stream().
-				filter( element -> element.getIsOwner()==1 ).
-				map( el -> el.getUser() ).
-				findFirst().
-				orElseGet(null);
+		return accountsRepository.getOwnerOfAccount(accountId);
 	}
 	
 	public boolean addUserToAccount(Long accountId, Long userId) {
